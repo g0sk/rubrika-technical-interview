@@ -8,7 +8,7 @@ const {width, height} = Dimensions.get("window");
 export const Screen = ({children}: {children: React.ReactNode}) => {
   return (
     <SafeAreaView>
-      <StatusBar backgroundColor="auto" />
+      <StatusBar style="auto" animated={true} />
       <View style={{height: height, width: width}}>{children}</View>
     </SafeAreaView>
   );
