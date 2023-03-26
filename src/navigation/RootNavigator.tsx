@@ -1,6 +1,6 @@
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {NavigationContainer} from "@react-navigation/native";
-import Home from "../screens/Home";
+import Home from "../screens/home/Home";
 import Search from "../screens/Search";
 
 type RootStackParamList = {
