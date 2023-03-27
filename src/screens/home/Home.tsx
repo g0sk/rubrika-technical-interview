@@ -1,11 +1,12 @@
-import {View, Text, StyleSheet} from "react-native";
+import {Button, View, Text, StyleSheet} from "react-native";
 import {Screen} from "../../components/Screen";
 import {useCurrentWeather} from "../../hooks/weather/useCurrentWeather";
 import {WeatherCard} from "./WeatherCard";
 import {ForecastList} from "./ForecastList";
+import {HomeNavigationProps} from "../../navigation/types";
 
-export default function Search() {
-  const {data} = useCurrentWeather({lat: 9.26211, lon: 125.964371});
+export const Home: React.FC<HomeNavigationProps> = ({route, navigation}) => {
+  const {data} = useCurrentWeather(route.params.coordinates);
   return (
     <Screen>
       <View style={styles.header}>
@@ -17,9 +18,12 @@ export default function Search() {
       <View style={{height: "100%", width: "100%"}}>
         <ForecastList />
       </View>
+      <View style={styles.button}>
+        <Button title="Search" onPress={() => navigation.navigate("Search")} />
+      </View>
     </Screen>
   );
-}
+};
 
 const styles = StyleSheet.create({
   header: {
@@ -32,5 +36,9 @@ const styles = StyleSheet.create({
   },
   weatherCard: {
     alignItems: "center",
+  },
+  button: {
+    borderRadius: 8,
+    zIndex: 10,
   },
 });

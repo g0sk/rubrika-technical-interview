@@ -1,8 +1,15 @@
 import {useMemo, useRef, useState} from "react";
-import {View, Text, TextInput as RNTextInput, StyleSheet} from "react-native";
+import {
+  View,
+  Text,
+  TextInput as RNTextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import {Screen} from "../../components/Screen";
 import {TextInput} from "../../components/TextInput";
 import {FlashList, ListRenderItem} from "@shopify/flash-list";
+import {type SearchNavigationProp} from "../../navigation/types";
 import debounce from "lodash.debounce";
 
 type City = {
@@ -16,7 +23,11 @@ type City = {
   };
 };
 
-export default function Search() {
+type SearchScreenProps = {
+  navigation: SearchNavigationProp;
+};
+
+export const Search = ({navigation}: SearchScreenProps) => {
   const [query, setQuery] = useState("");
   const cities: City[] = require("./citiesReduced.json");
   const [filteredCities, setFilteredCities] = useState<City[]>([...cities]);
@@ -28,7 +39,8 @@ export default function Search() {
   };
 
   /**
-   * Currently searching by substrings, not by characters
+   * Currently searching by substrings, not by characters.
+   * Could be filtered first by startsWith(query) and then by substring
    */
   const debounceSearch = useMemo(
     () =>
@@ -44,20 +56,24 @@ export default function Search() {
 
   const renderItem: ListRenderItem<City> = ({item}) => {
     return (
-      <View
-        style={{
-          height: 40,
-          padding: 5,
-          marginTop: 20,
-          marginHorizontal: 20,
-          alignItems: "center",
-          backgroundColor: "grey",
-          borderRadius: 4,
-          width: 350,
-        }}
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Home", {coordinates: item.coord})}
       >
-        <Text>{`${item.name} | ${item.country}`}</Text>
-      </View>
+        <View
+          style={{
+            height: 40,
+            padding: 5,
+            marginTop: 20,
+            marginHorizontal: 20,
+            alignItems: "center",
+            backgroundColor: "grey",
+            borderRadius: 4,
+            width: 350,
+          }}
+        >
+          <Text>{`${item.name} | ${item.country}`}</Text>
+        </View>
+      </TouchableOpacity>
     );
   };
 
@@ -81,7 +97,7 @@ export default function Search() {
       </View>
     </Screen>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
