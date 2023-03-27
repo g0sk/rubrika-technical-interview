@@ -1,7 +1,7 @@
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {NavigationContainer} from "@react-navigation/native";
 import Home from "../screens/home/Home";
-import Search from "../screens/Search";
+import Search from "../screens/search/Search";
 
 type RootStackParamList = {
   Home: undefined;
@@ -12,7 +12,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const RootStack = () => {
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator initialRouteName="Search">
       <Stack.Screen
         name="Home"
         component={Home}
