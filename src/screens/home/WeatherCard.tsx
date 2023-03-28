@@ -28,40 +28,24 @@ export const WeatherCard = ({weatherData}: Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View style={styles.header}>
-          <Text style={styles.text}>{`${weatherData.name} - Today`}</Text>
-        </View>
-        <Icon name="ellipsis-horizontal" size={25} color="grey" />
+        <Text style={styles.text}>{`${weatherData.name} - Today`}</Text>
+        <Icon name="ellipsis-horizontal" size={25} color="#b1b1b1" />
       </View>
       <View style={styles.body}>
-        <View style={styles.section}>
-          <View>
-            <View>
-              <Text>{currentDay}</Text>
-            </View>
-            <View>
-              <Text>{temps}</Text>
-            </View>
-          </View>
-          <View style={styles.section}>
-            <Image
-              source={{
-                uri: `https://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`,
-                height: 80,
-                width: 80,
-              }}
-            />
-          </View>
-        </View>
-      </View>
-      <View style={styles.footer}>
-        <View>
+        <View style={styles.leftSection}>
+          <Text style={styles.text}>{currentDay}</Text>
+          <Text style={styles.temperature}>{temps}</Text>
           <Text>{rainChance}</Text>
         </View>
-        <View>
-          <Text>
-            {weatherData.weather.length > 0 ? weatherData.weather[0].main : ""}
-          </Text>
+        <View style={styles.rightSection}>
+          <Image
+            source={{
+              uri: `https://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`,
+              height: 80,
+              width: 80,
+            }}
+          />
+          <Text style={styles.weatherMain}>{weatherData.weather[0].main}</Text>
         </View>
       </View>
     </View>
@@ -70,15 +54,13 @@ export const WeatherCard = ({weatherData}: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 50,
-    marginTop: 50,
-    marginBottom: 20,
-    height: 220,
+    height: 170,
     width: 300,
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 5,
-    elevation: 1,
+    borderWidth: 0.5,
+    borderColor: "#c4c2c1",
   },
   header: {
     flexDirection: "row",
@@ -86,20 +68,32 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   body: {
-    paddingTop: 20,
+    backgroundColor: "green",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 20,
+    height: 130,
+  },
+  leftSection: {
+    backgroundColor: "red",
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
+  rightSection: {
+    backgroundColor: "red",
+    alignItems: "center",
     flexDirection: "column",
   },
+  weatherMain: {
+    fontSize: 18,
+    color: "#8797aa",
+  },
   text: {
-    color: "black",
+    color: "#8797aa",
   },
-  section: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  footer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+  temperature: {
+    fontSize: 30,
+    fontWeight: "bold",
   },
 });

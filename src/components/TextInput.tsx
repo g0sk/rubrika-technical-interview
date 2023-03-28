@@ -19,7 +19,14 @@ export const TextInput = forwardRef<RNTextInput, TextInputProps>(
           size={22}
           color="black"
         />
-        <RNTextInput ref={ref} {...props} style={{width: 250}} />
+        <RNTextInput
+          ref={ref}
+          {...props}
+          style={{width: 262, paddingLeft: 5}}
+          selectionColor="#000"
+          underlineColorAndroid="transparent"
+          cursorColor="#000"
+        />
       </View>
     );
   }
@@ -29,10 +36,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    borderRadius: 4,
-    height: 35,
-    backgroundColor: "grey",
-    paddingHorizontal: 5,
+    height: 40,
+    paddingHorizontal: 10,
+    borderRadius: 7,
+    backgroundColor: "#e6e6e6",
   },
   icon: {
     marginRight: 5,

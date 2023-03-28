@@ -9,33 +9,42 @@ export const Home: React.FC<HomeNavigationProps> = ({route, navigation}) => {
   const {data} = useCurrentWeather(route.params.coordinates);
   return (
     <Screen>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>{data?.name}</Text>
-      </View>
-      <View style={styles.weatherCard}>
-        {data && <WeatherCard weatherData={data} />}
-      </View>
-      <View style={{height: "100%", width: "100%"}}>
-        <ForecastList />
-      </View>
-      <View style={styles.button}>
-        <Button title="Search" onPress={() => navigation.navigate("Search")} />
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>{data?.name}</Text>
+        </View>
+        <View style={styles.weatherCard}>
+          {data && <WeatherCard weatherData={data} />}
+        </View>
+        <View style={{height: "100%", width: "100%"}}>
+          <ForecastList />
+        </View>
+        <View style={styles.button}>
+          <Button
+            title="Search"
+            onPress={() => navigation.navigate("Search")}
+          />
+        </View>
       </View>
     </Screen>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "white",
+  },
   header: {
-    marginVertical: 20,
+    marginTop: 40,
     alignItems: "center",
   },
   headerText: {
-    fontSize: 45,
+    fontSize: 32,
     fontWeight: "bold",
   },
   weatherCard: {
     alignItems: "center",
+    marginVertical: 30,
   },
   button: {
     borderRadius: 8,

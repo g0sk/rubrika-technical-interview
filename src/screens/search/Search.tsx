@@ -11,6 +11,12 @@ import {TextInput} from "../../components/TextInput";
 import {FlashList, ListRenderItem} from "@shopify/flash-list";
 import {type SearchNavigationProp} from "../../navigation/types";
 import debounce from "lodash.debounce";
+import Icon from "@expo/vector-icons/Ionicons";
+
+interface LocationData {
+  lat: number;
+  lon: number;
+}
 
 type City = {
   id: number;
@@ -33,23 +39,23 @@ export const Search = ({navigation}: SearchScreenProps) => {
   const [filteredCities, setFilteredCities] = useState<City[]>([...cities]);
   const searchRef = useRef<RNTextInput>(null);
 
+  const goBack = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    }
+  };
+
   const handleOnChangeText = (text: string) => {
     setQuery(text);
     debounceSearch(text);
   };
 
-  /**
-   * Currently searching by substrings, not by characters.
-   * Could be filtered first by startsWith(query) and then by substring
-   */
   const debounceSearch = useMemo(
     () =>
       debounce((text: string) => {
-        setFilteredCities(
-          cities.filter((city) =>
-            city.name.toLowerCase().includes(text.toLowerCase())
-          )
-        );
+        const pattern = new RegExp(text.split("").join(".*"), "i");
+        const filteredData = cities.filter((city) => pattern.test(city.name));
+        setFilteredCities(filteredData);
       }, 500),
     [query]
   );
@@ -59,19 +65,10 @@ export const Search = ({navigation}: SearchScreenProps) => {
       <TouchableOpacity
         onPress={() => navigation.navigate("Home", {coordinates: item.coord})}
       >
-        <View
-          style={{
-            height: 40,
-            padding: 5,
-            marginTop: 20,
-            marginHorizontal: 20,
-            alignItems: "center",
-            backgroundColor: "grey",
-            borderRadius: 4,
-            width: 350,
-          }}
-        >
-          <Text>{`${item.name} | ${item.country}`}</Text>
+        <View style={styles.item}>
+          <Text
+            style={styles.itemText}
+          >{`${item.name} | ${item.country}`}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -80,20 +77,28 @@ export const Search = ({navigation}: SearchScreenProps) => {
   return (
     <Screen>
       <View style={styles.container}>
-        <TextInput
-          ref={searchRef}
-          placeholder=""
-          value={query}
-          onChangeText={(e) => handleOnChangeText(e)}
-        />
-      </View>
-      <View style={{height: "100%", width: "100%", justifyContent: "center"}}>
-        <FlashList
-          data={filteredCities}
-          keyExtractor={(_item, idx) => idx.toString()}
-          renderItem={renderItem}
-          estimatedItemSize={50}
-        />
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => goBack()}>
+            <View style={styles.icon}>
+              <Icon name="chevron-back-outline" size={30} color="black" />
+            </View>
+          </TouchableOpacity>
+          <TextInput
+            ref={searchRef}
+            placeholder=""
+            value={query}
+            onChangeText={(e) => handleOnChangeText(e)}
+          />
+        </View>
+        <View style={styles.list}>
+          <FlashList
+            data={filteredCities}
+            keyExtractor={(_item, idx) => idx.toString()}
+            renderItem={renderItem}
+            estimatedItemSize={50}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
       </View>
     </Screen>
   );
@@ -101,7 +106,35 @@ export const Search = ({navigation}: SearchScreenProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 20,
-    marginHorizontal: 50,
+    flex: 1,
+    justifyContent: "center",
+  },
+  header: {
+    marginHorizontal: 20,
+    marginTop: 20,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  icon: {
+    marginRight: 15,
+  },
+  list: {
+    flex: 2,
+    marginTop: 20,
+    marginHorizontal: 35,
+    height: 400,
+    justifyContent: "center",
+  },
+  item: {
+    backgroundColor: "#e6e6e6",
+    height: 48,
+    padding: 5,
+    marginVertical: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 7,
+  },
+  itemText: {
+    fontSize: 17,
   },
 });

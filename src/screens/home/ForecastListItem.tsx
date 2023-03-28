@@ -18,38 +18,43 @@ export const ForecastListItem = ({forecastItem}: ForecastListItemProps) => {
   const forecastDate = new Date(forecastItem.dt_txt);
   const forecastDay = `${days[forecastDate.getDay()]}`;
   const forecastTime = `${forecastDate.getHours()}:00`;
-  const rainChance = `${forecastItem.rain ? forecastItem.rain["3h"] : 0}%`;
+  const rainChance = `${
+    forecastItem.rain ? Math.floor(forecastItem.rain["3h"]) : 0
+  }%`;
   const temp = `${forecastItem.main.temp.toString().slice(0, 2)}`;
+
   return (
     <View style={styles.itemContainer}>
       <View style={styles.section}>
-        <Text>{forecastDay}</Text>
-        <Text>{forecastTime}</Text>
+        <Text style={styles.data}>{forecastDay}</Text>
+        <Text style={styles.data}>{forecastTime}</Text>
       </View>
       {forecastItem.weather.length > 0 && (
-        <View>
-          <Text>{forecastItem.weather[0].main}</Text>
-          <Text style={{textTransform: "capitalize"}}>
+        <View style={styles.section}>
+          <Text style={styles.data}>{forecastItem.weather[0].main}</Text>
+          <Text style={styles.weatherDescription}>
             {forecastItem.weather[0].description}
           </Text>
         </View>
       )}
       <View style={styles.section}>
-        <Text>Rain</Text>
-        <Text>{rainChance}</Text>
+        <Text style={styles.data}>Rain</Text>
+        <Text style={styles.data}>{rainChance}</Text>
       </View>
       <View style={styles.section}>
-        <Text>ºC</Text>
+        <Text style={styles.data}>ºC</Text>
         <Text>{temp}</Text>
       </View>
       <View style={styles.section}>
-        <Image
-          source={{
-            uri: `https://openweathermap.org/img/w/${forecastItem.weather[0].icon}.png`,
-            height: 60,
-            width: 60,
-          }}
-        />
+        <View>
+          <Image
+            source={{
+              uri: `https://openweathermap.org/img/w/${forecastItem.weather[0].icon}.png`,
+              height: 45,
+              width: 45,
+            }}
+          />
+        </View>
       </View>
     </View>
   );
@@ -57,18 +62,36 @@ export const ForecastListItem = ({forecastItem}: ForecastListItemProps) => {
 
 const styles = StyleSheet.create({
   itemContainer: {
-    height: 70,
-    marginHorizontal: 30,
+    height: 60,
+    paddingHorizontal: 20,
+    paddingBottom: 10,
     marginVertical: 10,
     borderBottomWidth: 1,
-    borderColor: "grey",
+    borderColor: "#c4c2c1",
     flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  row: {
     justifyContent: "space-between",
   },
   section: {
     flexDirection: "column",
     marginHorizontal: 10,
-    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  descriptionSection: {
+    flexDirection: "column",
+    marginHorizontal: 10,
+    justifyContent: "space-between",
+    minWidth: 200,
+  },
+  data: {
+    fontSize: 16,
+  },
+  weatherDescription: {
+    textTransform: "capitalize",
+    fontSize: 16,
+    color: "#8797aa",
   },
 });
 
