@@ -13,11 +13,6 @@ import {type SearchNavigationProp} from "../../navigation/types";
 import debounce from "lodash.debounce";
 import Icon from "@expo/vector-icons/Ionicons";
 
-interface LocationData {
-  lat: number;
-  lon: number;
-}
-
 type City = {
   id: number;
   name: string;
@@ -78,11 +73,13 @@ export const Search = ({navigation}: SearchScreenProps) => {
     <Screen>
       <View style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => goBack()}>
-            <View style={styles.icon}>
-              <Icon name="chevron-back-outline" size={30} color="black" />
-            </View>
-          </TouchableOpacity>
+          {navigation.canGoBack() && (
+            <TouchableOpacity onPress={() => goBack()}>
+              <View style={styles.icon}>
+                <Icon name="chevron-back-outline" size={28} color="black" />
+              </View>
+            </TouchableOpacity>
+          )}
           <TextInput
             ref={searchRef}
             placeholder=""
@@ -114,6 +111,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
   },
   icon: {
     marginRight: 15,

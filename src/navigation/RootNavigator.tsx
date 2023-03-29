@@ -13,7 +13,7 @@ const RootStack = () => {
         name="Home"
         component={Home}
         options={({route}) => ({
-          headerShown: true,
+          headerShown: false,
           coordinates: route.params.coordinates,
         })}
       />

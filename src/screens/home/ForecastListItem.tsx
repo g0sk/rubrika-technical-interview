@@ -25,36 +25,34 @@ export const ForecastListItem = ({forecastItem}: ForecastListItemProps) => {
 
   return (
     <View style={styles.itemContainer}>
-      <View style={styles.section}>
+      <View style={styles.bigSection}>
         <Text style={styles.data}>{forecastDay}</Text>
         <Text style={styles.data}>{forecastTime}</Text>
       </View>
       {forecastItem.weather.length > 0 && (
-        <View style={styles.section}>
+        <View style={styles.bigSection}>
           <Text style={styles.data}>{forecastItem.weather[0].main}</Text>
           <Text style={styles.weatherDescription}>
             {forecastItem.weather[0].description}
           </Text>
         </View>
       )}
-      <View style={styles.section}>
+      <View style={styles.smallSection}>
         <Text style={styles.data}>Rain</Text>
         <Text style={styles.data}>{rainChance}</Text>
       </View>
-      <View style={styles.section}>
+      <View style={styles.smallSection}>
         <Text style={styles.data}>ºC</Text>
         <Text>{temp}</Text>
       </View>
-      <View style={styles.section}>
-        <View>
-          <Image
-            source={{
-              uri: `https://openweathermap.org/img/w/${forecastItem.weather[0].icon}.png`,
-              height: 45,
-              width: 45,
-            }}
-          />
-        </View>
+      <View style={styles.smallSection}>
+        <Image
+          source={{
+            uri: `https://openweathermap.org/img/w/${forecastItem.weather[0].icon}.png`,
+            height: 45,
+            width: 45,
+          }}
+        />
       </View>
     </View>
   );
@@ -62,21 +60,24 @@ export const ForecastListItem = ({forecastItem}: ForecastListItemProps) => {
 
 const styles = StyleSheet.create({
   itemContainer: {
-    height: 60,
-    paddingHorizontal: 20,
-    paddingBottom: 10,
-    marginVertical: 10,
+    height: 70,
+    alignItems: "center",
     borderBottomWidth: 1,
     borderColor: "#c4c2c1",
     flexDirection: "row",
     justifyContent: "space-between",
+    marginHorizontal: 30,
   },
-  row: {
+  bigSection: {
+    flexDirection: "column",
+    width: 100,
+    marginRight: 5,
     justifyContent: "space-between",
   },
-  section: {
+  smallSection: {
     flexDirection: "column",
-    marginHorizontal: 10,
+    width: 50,
+    marginRight: 5,
     justifyContent: "space-between",
   },
   descriptionSection: {
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
     minWidth: 200,
   },
   data: {
-    fontSize: 16,
+    fontSize: 17,
   },
   weatherDescription: {
     textTransform: "capitalize",
