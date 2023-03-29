@@ -18,9 +18,9 @@ const days = [
 
 export const WeatherCard = ({weatherData}: Props) => {
   const currentDay = `${days[new Date().getDay()]} ${new Date().getUTCDate()}`;
-  const temps = `${weatherData.main.temp
-    .toString()
-    .slice(0, 2)}/${weatherData.main.temp_max.toString().slice(0, 2)} ºC`;
+  const temps = `${Math.floor(weatherData.main.temp)}/${Math.floor(
+    weatherData.main.temp_max
+  )} ºC`;
   const rainChance = `Chance of Rain ${
     weatherData.rain ? Math.floor(weatherData.rain["1h"]) : 0
   }%`;
@@ -46,8 +46,8 @@ export const WeatherCard = ({weatherData}: Props) => {
           <Image
             source={{
               uri: `https://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`,
-              height: 75,
-              width: 75,
+              height: 80,
+              width: 80,
             }}
           />
           <View style={styles.subSection}>

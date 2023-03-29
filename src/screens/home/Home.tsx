@@ -16,20 +16,22 @@ export const Home: React.FC<HomeNavigationProps> = ({route, navigation}) => {
             <Icon name="chevron-back-outline" size={28} color="black" />
           </TouchableOpacity>
         </View>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>{data?.name}</Text>
-        </View>
-        <View style={styles.weatherCard}>
-          {data && <WeatherCard weatherData={data} />}
-        </View>
-        <View style={styles.list}>
-          <ForecastList coordinates={route.params.coordinates} />
-        </View>
-        <TouchableOpacity onPress={() => navigation.navigate("Search")}>
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>Search City</Text>
+        <View style={{alignItems: "center"}}>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>{data?.name}</Text>
           </View>
-        </TouchableOpacity>
+          <View style={styles.weatherCard}>
+            {data && <WeatherCard weatherData={data} />}
+          </View>
+          <View style={styles.list}>
+            <ForecastList coordinates={route.params.coordinates} />
+          </View>
+          <TouchableOpacity onPress={() => navigation.navigate("Search")}>
+            <View style={styles.button}>
+              <Text style={styles.buttonText}>Search City</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     </Screen>
   );
@@ -38,7 +40,6 @@ export const Home: React.FC<HomeNavigationProps> = ({route, navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
     marginBottom: 40,
   },
   icon: {
