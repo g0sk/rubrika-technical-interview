@@ -1,4 +1,4 @@
-import {Image, View, Text, StyleSheet} from "react-native";
+import {Platform, Image, View, Text, StyleSheet} from "react-native";
 import {type CurrentWeatherResponse} from "../../hooks/weather/useCurrentWeather";
 import Icon from "@expo/vector-icons/Ionicons";
 
@@ -26,7 +26,12 @@ export const WeatherCard = ({weatherData}: Props) => {
   }%`;
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        Platform.OS === "android" ? styles.androidShadow : styles.iosShadow,
+      ]}
+    >
       <View style={styles.header}>
         <Text style={styles.headerText}>{`${weatherData.name} - Today`}</Text>
         <Icon name="ellipsis-horizontal" size={25} color="#bdbdbd" />
@@ -37,11 +42,8 @@ export const WeatherCard = ({weatherData}: Props) => {
             <Text style={styles.currentDay}>{currentDay}</Text>
             <Text style={styles.temperature}>{temps}</Text>
           </View>
-          <View>
-            <Text style={styles.rainText}>{rainChance}</Text>
-          </View>
+          <Text style={styles.rainText}>{rainChance}</Text>
         </View>
-
         <View style={styles.section}>
           <Image
             source={{
@@ -50,7 +52,7 @@ export const WeatherCard = ({weatherData}: Props) => {
               width: 80,
             }}
           />
-          <View style={styles.subSection}>
+          <View style={{paddingLeft: 10}}>
             <Text style={styles.weatherMain}>
               {weatherData.weather[0].main}
             </Text>
@@ -66,9 +68,18 @@ const styles = StyleSheet.create({
     height: 170,
     width: 300,
     paddingHorizontal: 25,
-    borderRadius: 5,
-    borderWidth: 0.5,
-    borderColor: "#c4c2c1",
+  },
+  iosShadow: {
+    shadowOffset: {width: 0, height: 0},
+    shadowOpacity: 0.25,
+    shadowRadius: 2,
+  },
+  androidShadow: {
+    borderColor: "#bdbdbd",
+    borderBottomWidth: 1,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderRadius: 7,
   },
   header: {
     paddingTop: 17,
@@ -93,7 +104,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     minWidth: 40,
   },
-  subSection: {},
   rainText: {
     fontSize: 17,
   },

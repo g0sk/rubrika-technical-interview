@@ -1,7 +1,7 @@
 import {Image, View, Text, StyleSheet} from "react-native";
-
+import {type ForecastItem} from "../../hooks/weather/useForecastWeather";
 type ForecastListItemProps = {
-  forecastItem: ForecastListItem;
+  forecastItem: ForecastItem;
 };
 
 const days = [
@@ -21,31 +21,69 @@ export const ForecastListItem = ({forecastItem}: ForecastListItemProps) => {
   const rainChance = `${
     forecastItem.rain ? Math.floor(forecastItem.rain["3h"]) : 0
   }%`;
-  const temp = `${forecastItem.main.temp.toString().slice(0, 2)}`;
+  const temp = `${Math.floor(forecastItem.main.temp)}`;
 
   return (
     <View style={styles.itemContainer}>
-      <View style={styles.bigSection}>
-        <Text style={styles.data}>{forecastDay}</Text>
+      <View
+        style={{
+          flexDirection: "column",
+          width: 100,
+          justifyContent: "space-between",
+        }}
+      >
+        <View style={styles.row}>
+          <Text style={styles.label}>{forecastDay}</Text>
+        </View>
         <Text style={styles.data}>{forecastTime}</Text>
       </View>
       {forecastItem.weather.length > 0 && (
-        <View style={styles.bigSection}>
-          <Text style={styles.data}>{forecastItem.weather[0].main}</Text>
+        <View
+          style={{
+            flexDirection: "column",
+            width: 110,
+            justifyContent: "space-between",
+          }}
+        >
+          <View style={styles.row}>
+            <Text style={styles.label}>{forecastItem.weather[0].main}</Text>
+          </View>
           <Text style={styles.weatherDescription}>
             {forecastItem.weather[0].description}
           </Text>
         </View>
       )}
-      <View style={styles.smallSection}>
-        <Text style={styles.data}>Rain</Text>
+      <View
+        style={{
+          flexDirection: "column",
+          width: 50,
+          justifyContent: "space-between",
+        }}
+      >
+        <View style={styles.row}>
+          <Text style={styles.label}>Rain</Text>
+        </View>
         <Text style={styles.data}>{rainChance}</Text>
       </View>
-      <View style={styles.smallSection}>
-        <Text style={styles.data}>ºC</Text>
-        <Text>{temp}</Text>
+      <View
+        style={{
+          flexDirection: "column",
+          width: 50,
+          justifyContent: "space-between",
+        }}
+      >
+        <View style={styles.row}>
+          <Text style={styles.label}>ºC</Text>
+        </View>
+        <Text style={styles.data}>{temp}</Text>
       </View>
-      <View style={styles.smallSection}>
+      <View
+        style={{
+          flexDirection: "column",
+          width: 45,
+          justifyContent: "space-between",
+        }}
+      >
         <Image
           source={{
             uri: `https://openweathermap.org/img/w/${forecastItem.weather[0].icon}.png`,
@@ -60,34 +98,27 @@ export const ForecastListItem = ({forecastItem}: ForecastListItemProps) => {
 
 const styles = StyleSheet.create({
   itemContainer: {
-    height: 70,
+    height: 90,
     alignItems: "center",
     borderBottomWidth: 1,
     borderColor: "#c4c2c1",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginHorizontal: 30,
+    marginHorizontal: 25,
   },
-  bigSection: {
-    flexDirection: "column",
-    width: 100,
-    marginRight: 5,
-    justifyContent: "space-between",
-  },
-  smallSection: {
-    flexDirection: "column",
-    width: 50,
-    marginRight: 5,
-    justifyContent: "space-between",
+  row: {
+    paddingBottom: 10,
   },
   descriptionSection: {
     flexDirection: "column",
-    marginHorizontal: 10,
     justifyContent: "space-between",
     minWidth: 200,
   },
+  label: {
+    fontSize: 16,
+  },
   data: {
-    fontSize: 17,
+    fontSize: 16,
   },
   weatherDescription: {
     textTransform: "capitalize",
@@ -95,46 +126,3 @@ const styles = StyleSheet.create({
     color: "#8797aa",
   },
 });
-
-export type ForecastListItem = {
-  dt: number;
-  main: {
-    temp: number;
-    feels_like: number;
-    temp_min: number;
-    temp_max: number;
-    pressure: number;
-    sea_level: number;
-    grnd_level: number;
-    humidity: number;
-    temp_kf: number;
-  };
-  weather: [
-    {
-      id: number;
-      main: string;
-      description: string;
-      icon: string;
-    }
-  ];
-  clouds: {
-    all: number;
-  };
-  wind: {
-    speed: number;
-    deg: number;
-    gust: number;
-  };
-  visibility: number;
-  pop: number;
-  rain?: {
-    "3h": number;
-  };
-  snow?: {
-    "3h": number;
-  };
-  sys: {
-    pod: string;
-  };
-  dt_txt: string;
-};

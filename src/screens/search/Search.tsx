@@ -1,17 +1,10 @@
-import {useMemo, useRef, useState} from "react";
-import {
-  View,
-  Text,
-  TextInput as RNTextInput,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import {useMemo, useState} from "react";
+import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
 import {Screen} from "../../components/Screen";
 import {TextInput} from "../../components/TextInput";
 import {FlashList, ListRenderItem} from "@shopify/flash-list";
 import {type SearchNavigationProp} from "../../navigation/types";
 import debounce from "lodash.debounce";
-import Icon from "@expo/vector-icons/Ionicons";
 
 type City = {
   id: number;
@@ -30,15 +23,12 @@ type SearchScreenProps = {
 
 export const Search = ({navigation}: SearchScreenProps) => {
   const [query, setQuery] = useState("");
-  const cities: City[] = require("./citiesReduced.json");
+  /**
+   * JSON file is too large to be imported directly (40MB). It could be chunked
+   * using JSONStream. Right now its just a reduced version of the original file.
+   */
+  const cities: City[] = require("../../../resources/citiesReduced.json");
   const [filteredCities, setFilteredCities] = useState<City[]>([...cities]);
-  const searchRef = useRef<RNTextInput>(null);
-
-  const goBack = () => {
-    if (navigation.canGoBack()) {
-      navigation.goBack();
-    }
-  };
 
   const handleOnChangeText = (text: string) => {
     setQuery(text);
@@ -73,15 +63,7 @@ export const Search = ({navigation}: SearchScreenProps) => {
     <Screen>
       <View style={styles.container}>
         <View style={styles.header}>
-          {navigation.canGoBack() && (
-            <TouchableOpacity onPress={() => goBack()}>
-              <View style={styles.icon}>
-                <Icon name="chevron-back-outline" size={28} color="black" />
-              </View>
-            </TouchableOpacity>
-          )}
           <TextInput
-            ref={searchRef}
             placeholder=""
             value={query}
             onChangeText={(e) => handleOnChangeText(e)}
